@@ -1,0 +1,683 @@
+
+<meta charset="utf-8">
+<link rel="stylesheet" href="mycss.css">
+
+<script src="template.js"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML"> </script>
+
+<script type="text/front-matter">
+  title: "Dynamic Programming"
+  description: "Concepts in Constrained Optimization"
+  authors:
+  - Arihant Jain
+  - Venkatesh Vaddadi
+  - Avishek Shaw
+  affiliations:
+  - CDS-IISc: http://cds.iisc.ac.in/
+  - CDS-IISc: http://cds.iisc.ac.in/
+  - CDS-IISc: http://cds.iisc.ac.in/
+</script>
+
+<dt-article>
+
+  <h1 style="color:Blue"> Dynamic Programming </h1>
+  <h3> Three different facets </h3>
+  <dt-byline></dt-byline>
+
+  <p> Dynamic Programming is a versatile method of computation which finds applications in wide ranging fields from aerospace engineering to economics. It was developed by Richard Bellman in the 1950s. It can be used as a method of optimization as well as in computer programming. In this blog, we will consider three different applications of Dynamic Programming namely Reinforcement Learning, Reliability Engineering and Budget Allocation. The first two applications fall broadly under the umbrella of optimization problems, the last one under the domain of computer science. Dynamic Programming problems in Computer Science require two key attributes : optimal substructure and overlapping sub-problems. </p>
+
+    <h1>Reinforcement Learning<dt-cite key="sutton"></dt-cite></h1>
+
+    <!-- <center> -->
+    <figure  align="center">
+  	<img src="RL.png" style="width:80%">
+  	<figcaption>Alpha GO: the first algorithm to beat humans at GO </figcaption>
+	</figure>
+	<!-- </center> -->
+
+	<p>
+		Reinforcement Learning is an area of machine learning concerned with developing intelligent agents whio take actions in an environment to maximize rewards. For a brief introduction to the concepts of Reinforcement Learning refer to the blog <a href="https://towardsdatascience.com/reinforcement-learning-an-introduction-to-the-concepts-applications-and-code-ced6fbfd882d"> here. </a>
+	</p>
+
+    <p>
+      Classical Dynamic Programming (DP) algorithms require a perfect knowledge of Markov Decision Process (MDP) to be useful in Reinforcement Learning (RL) . Hence, they may not be directly applied to such problems. Generally,they also incur large computational expense. However, they can be adapated to work with RL problems, and that too at a less-than-classical-computational expense. 
+    </p>
+    
+    <p>
+      In this entire discussion, we will assume that that the environment is a finite MDP i.e. the state and the action sets, 
+      \(\mathcal{S} \) 
+      and 
+      \( \mathcal{A(s)} \), 
+      for some 
+      \(s \in \mathcal{S} \),
+      are finite and that its dynamics are given by a set of transition probabilities, 
+      \( \mathcal{P}_{s s^{&#39;}}^{a} = Pr \{s_{t+1}  =  s^{&#39;}|s_{t} = s,a_{t} = a) \} \) 
+      and the expected immediate reward,  
+      \(\mathcal{R}_{ss^{&#39;}}^{a} = E \{r_{t+1}|a_{t} = a, s_{t} =s,s_{t+1} = s^{&#39;} \} \), 
+      for all 
+      \(s \in \mathcal{S}, a \in \mathcal{A}(s) \), 
+      and 
+      \(s^{&#39;} \in \mathcal{S}^{+} (\mathcal{S}^{+} \) 
+      is 
+      \(\mathcal{S} \) 
+      plus a terminal state if the problem is episodic).
+    </p>
+
+
+    <p>
+      We will consider the use of DP for <b> Policy Evaluation </b>. Policy evaluation is used to estimate the goodness of a policy. Bellman equation of optimality for state value function 
+      \(V^{\pi}_{s} \) 
+      (for an arbitrary policy \( \pi \) )
+      for all
+      \(s \in \mathcal{S} \)
+      is given below:. 
+      \begin{equation}
+      \begin{split}
+        V^{\pi}_s &=  E_{\pi} \{ r_{t+1} + \gamma r_{t+2} + \gamma r_{t+3} + ......| \hspace{0.1cm} s_{t} = s \} \\ 
+      \end{split}
+      \end{equation}
+    </p>
+
+    <p>
+      This equation can be re-written as follows:
+      \begin{equation}
+      \begin{split}
+        V^{\pi}_s &=  E_{\pi} \{ r_{t+1} + \gamma V^{\pi} (s_{t+1}) \hspace{0.1cm} | \hspace{0.1cm} s_{t} =s\} \\ \\
+        &=  \sum _{a} \pi(s,a) \sum_{s^{'}} \mathcal {P}^{a}_{ss^{'}} [\mathcal{R}^{a}_{ss^{'}} + \gamma V^{\pi}(s^{'})] 
+      \end{split}
+      \end{equation}
+      where 
+      \(\pi (s,a)\)
+      is the probability of taking action \(a\) in state \(s\) under policy \( \pi\), and the expectations are with respect to \( \pi \). The existence and uniqueness of \(  V^{\pi}_s \) is guaranteed if \( \gamma < 1\) or eventual termination is guranteed from all states under the policy  \( \pi \).
+    </p>
+
+    <p>
+    	If the environment's dynamics are completely known, it boils down to solving \(  |\mathcal{S}| \) simultaneous linear equations in \(  |\mathcal{S}| \) unkowns. However, that is generally not the case. We will consider an iterative solution technique where starting from
+    	\(V_{0}, V_{1}, V_{2}......\) 
+    	(each mapping \( \mathcal{S}^{+}\) to \( \mathcal{R}\)) we want to converge <b> in limit </b> to the policy \(  V^{\pi}_s \). The initial approximation \(  V_{0}\) is chosen arbitrarily and each succesive approximation can be obtained by tweaking the Bellman equation for \(  V^{\pi}_s \) as follows:
+	   
+	   	\begin{equation}
+	   	\begin{split}
+	    	V_{k+1}(s) &= E_{\pi} \{r_{t+1} + \gamma V_{k}(s_{t+1}) \hspace{0.1cm} | \hspace{0.1cm} s_{t} = s \} \\ \\
+	      	&= \sum _{a} \pi(s,a) \sum_{s^{'}} \mathcal {P}^{a}_{ss^{'}} [\mathcal{R}^{a}_{ss^{'}} + \gamma V_{k}(s^{'})] 
+	    \end{split}
+	    \end{equation}
+  	</p>
+  	<p>
+    	It can be shown the sequence \( \{ V^{k} \} \) converges to \(  V^{\pi}_s \) as \( s \rightarrow \infty \). This algorithm is called <i> iterative policy evaluation</i> . It also an example of an operation called <i> full backup</i> where each iteration <i>backs up</i> the value of every state to produce the new estimate of the value function \( V_{k+1} \). An algorithm for doing the same is given in the section below.
+ 	</p>
+
+  	<h2 style="color:DarkCyan";>Algorithm for Policy Evaluation</h2>
+
+	<!hr style="width:40%;text-align:center;margin-left:150">
+  	<p>
+    	<em>
+		    Input  \(  \pi \) , the policy to be evaluated <br> 
+		    Initialize   \(V(s) = 0 \) , for all  \( s \in \mathcal{S}^{+} \)  <br>
+		    Repeat<br>
+		       \( \hspace{1cm} \Delta \leftarrow 0  \)  <br>
+		       \( \hspace{1cm} \)  For each \( s \in \mathcal{S} \)  :<br> 
+		       \( \hspace{2cm} v \leftarrow V(s) \)  <br> 
+		       \( \hspace{2cm} V(s) \leftarrow  \sum _{a}  \pi(s,a) \sum_{s^{'}} \mathcal {P}^{a}_{ss^{'}}[\mathcal{R}^{a}_{ss^{'}} + \gamma V_{k}(s^{'})] \)<br>
+		       \( \hspace{2cm} \Delta \leftarrow \) max  \( ( \Delta, |v-V(s)|) \) <br>
+		    Until \( \Delta &lt; \theta \) (a small positive number)<br>
+		    Output \( V \approx V^{\pi} \) <br> 
+    	</em>
+  	</p>
+  	<!hr style="width:40%;text-align:center;margin-left:150">
+
+  	
+ 	<h1 id="reliability-design">Reliability Design</h1>
+
+    <p>The problem is to design a system that is composed of a several devices connected in the series. Let <span class="math inline">\(r_{i}\)</span> be the reliability of the device <span class="math inline">\(D_{i}\)</span>. Then the Reliability of the entire system is <span class="math inline">\(\prod r_{i}\)</span>. Even if the individual devices are very reliable, the reliability of the system may not be very good.</p>
+<p>For example, if <span class="math inline">\(n=10\)</span> and <span class="math inline">\(r_{i}=0.99\)</span>, <span class="math inline">\(1\leq i\leq 10\)</span>, then <span class="math inline">\(\prod r_{i}=0.904\)</span>. Hence, it is desirable to duplicate the devices. Multiple copies of the same device type are connected in parallel through the use of switching circuits. The switching circuits determine which devices in any given group are functioning properly. They the make use of one such device at each stage. </p>
+
+ <!-- <center>    -->
+ <figure align="center">
+  <img src="NO_blog_image_01.png" alt="Reliability Design" style="width:100%">
+  <figcaption>Figure-1: n devices are connected in series</figcaption>
+</figure>
+  <figure align="center">
+  <img src="NO_blog_image_02.png" alt="Reliability Design" style="width:100%">
+  <figcaption>Figure-2: Multiple devices are connected in parallel in each stage</figcaption>
+
+</figure>
+<!-- </center>    -->
+
+<p>
+<p>If the stage <span class="math inline">\(i\)</span> contains <span class="math inline">\(m_{i}\)</span> copies of the device <span class="math inline">\(D_{i}\)</span>, then the probability that all <span class="math inline">\(m_{i}\)</span> have a malfunction is <span class="math inline">\(\left ( 1-r_{i} \right )^{m_{i}}\)</span>. Hence the reliability of the stage <span class="math inline">\(i\)</span> becomes <span class="math inline">\(1-\left ( 1-r_{i} \right )^{m_{i}}\)</span>. Thus, if <span class="math inline">\(r_{i}=0.99\)</span> and <span class="math inline">\(m_{i}=2\)</span>, the stage reliability becomes <span class="math inline">\(0.9999\)</span>. In any practical situation, the stage reliability is little less than <span class="math inline">\(1-\left ( 1-r_{i} \right )^{m_{i}}\)</span> because the switching circuits themselves are not fully reliable. Also, failure of copies of the same device may not be fully independent. Let us assume that reliabilty of stage <span class="math inline">\(i\)</span> is given by a function <span class="math inline">\(\Phi _{i} \left ( m_{i} \right ), 1\le n\)</span>. Therefore, the reliability of the system of stages is <span class="math inline">\(\prod_{1 \le i \le n}{\Phi _{i}\left ( m_{i} \right ) }\)</span>. Our problem is to use device duplication to maximize reliability. This maximization of the reliability is carried under the cost constraint. Let <span class="math inline">\(c_{i}\)</span> be the cost of the unit device i and c be the maximum allowable cost of the system being designed. We wish to solve the following maximization problem. The following is the problem statement.</p>
+    
+<div class="Objectivefunction">
+	<p><strong>maximize</strong> <span class="math inline">\(\Phi _{i} \left ( m_{i} \right ), 1\le n\)</span></p>
+	<p><strong>subject to</strong> <span class="math inline">\(\sum _{1 \le i \le n} c_{i}m_{i} \le c\)</span></p>
+	<p><span class="math inline">\(m_{i} \ge 1\)</span> and integer, <span class="math inline">\(1 \le  i \le n\)</span>.</p>
+</div>
+<p>Since, we can assume each <span class="math inline">\(c_{i} \ge 0\)</span>, each <span class="math inline">\(m_{i}\)</span> must be in the range <span class="math inline">\(1 \le m_{i} \le u_{i}\)</span>, where <span class="math inline">\(u_{i}=\left \lfloor \frac{\left ( c+c_{i}-\sum_{j=1}^{n}{c_{j}} \right )}{c_{i}} \right \rfloor\)</span>. The upper bound <span class="math inline">\(u_{i}\)</span> follow from the observation that <span class="math inline">\(m_{j} \ge 1\)</span>. An optimal solution <span class="math inline">\(m_{1},m_{2},....m_{n}\)</span> is the result of a sequence of decisions, one decision for each <span class="math inline">\(m_{i}\)</span>.</p>
+<p>Let <span class="math inline">\(f_{i}(x)\)</span> represents the maximum value of the <span class="math inline">\(\prod_{1 \le j \le i}{\Phi _{i}\left ( m_{j} \right ) }\)</span> subject to the constraints <span class="math inline">\(\sum _{1 \le j \le i}{c_{j}m_{j}} \le x\)</span> and <span class="math inline">\(1 \le m_{j} \le u_{j}, 1 \le j \le i\)</span>. Then, the value of an optimal solution is <span class="math inline">\(f_{n}(c)\)</span>. The last decision made requires one to choose <span class="math inline">\(m_{n}\)</span> from <span class="math inline">\(\left \{ 1,2,3.......u_{n} \right \}\)</span>. Once a value for <span class="math inline">\(m_{n}\)</span> has been chosen, the remaining decisions must be such as to use the remaining funds <span class="math inline">\(c-c_{m}m_{n}\)</span> in an optimal way. The principle of the optimality holds. We can solve this problem of reliability design using dynamic programming strategy in the following way. The following is the recurrence relation for the optimal solution.</p>
+<p><span class="math display">\[f_{n}(c)= \max _{1 \le m_{n} \le u_{n}}\left \{ \Phi _{n}(m_{n}) f_{n-1}(c-c_{n}m_{n})     \right \}\]</span></p>
+<p>For any <span class="math inline">\(f_{i}(x)\)</span>, <span class="math inline">\(i \ge 1\)</span>, this equation generalizes in the following way.</p>
+<p><span class="math display">\[f_{i}(x)= \max _{1 \le m_{i} \le u_{i}}\left \{ \Phi _{i}(m_{i}) f_{i-1}(c-c_{i}m_{i})     \right \}\]</span> Let <span class="math inline">\(S^{i}\)</span> consists tuples of the form <span class="math inline">\((f,x)\)</span>, where <span class="math inline">\(f=f_{i}(x)\)</span>. There is at most one tuple for each different x that results from a sequence of decisions on <span class="math inline">\(m_{1},m_{2},....m_{n}\)</span>. The dominance rule <span class="math inline">\((f_{1},x_{1})\)</span> dominates <span class="math inline">\((f_{2},x_{2})\)</span> if <span class="math inline">\(f_{1} \ge f_{2}\)</span> and <span class="math inline">\(x_{1} \le x_{2}\)</span> holds for this problem too. Hence, dominated tuples can be discarded from <span class="math inline">\(S^{i}\)</span>.</p>
+  
+ <h2 id="example">Example:</h2>
+<p>We are designing a three stage system with device types <span class="math inline">\(D_{1},D_{2},D_{3}\)</span>. The cost are $ 30, $ 15, and $20 respectively. The cost of the system is to be no more than $ 105. The reliability of each device type is 0.9,0.8, and 0.5 respectively. We assume that if stage i has <span class="math inline">\(m_{i}\)</span> devices of type i in parallel, then <span class="math inline">\(\Phi _{i}( m_{i})= \left ( 1-r_{i} \right )^{m_{i}}\)</span>.</p>
+
+    <p><strong>Solution:</strong></p>
+    <p>The following is the problem data:</p>
+<div class="reliability_center">
+<table>
+<thead>
+<tr class="header">
+<th align="center"></th>
+<th align="center"><span class="math inline">\(m_{1}\)</span></th>
+<th align="center"><span class="math inline">\(m_{2}\)</span></th>
+<th align="center"><span class="math inline">\(m_{3}\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Cost/unit</td>
+<td align="center">30</td>
+<td align="center">15</td>
+<td align="center">20</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(c_{i}\)</span></td>
+<td align="center">0.9</td>
+<td align="center">0.8</td>
+<td align="center">0.5</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(u_{i}\)</span></td>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">3</td>
+</tr>
+</tbody>
+</table>
+</div>
+	<p><span class="math inline">\(S_{1}^{1}\) : (adding the first copy of D1)</span></p>
+
+<div class="reliability_center">
+<table>
+<thead>
+<tr class="header">
+<th align="center">Reliability</th>
+<th align="center">Cost</th>
+<th align="center">Set</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">0.9</td>
+<td align="center">30</td>
+<td align="center">(1,0,0)</td>
+</tr>
+</tbody>
+</table>
+</div>
+	<p><span class="math inline">\(S_{2}^{1}\) :(adding the second copy of D1)</span></p>
+<div class="reliability_center">
+<table>
+<thead>
+<tr class="header">
+<th align="center">Reliability</th>
+<th align="center">Cost</th>
+<th align="center">Set</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">0.9</td>
+<td align="center">30</td>
+<td align="center">(1,0,0)</td>
+</tr>
+<tr class="even">
+<td align="center">0.99</td>
+<td align="center">60</td>
+<td align="center">(2,0,0)</td>
+</tr>
+</tbody>
+</table>
+</div>
+	<p><span class="math inline">\(S_{1}^{2}\): (adding the first copy of D2)</span></p>
+
+<div class="reliability_center">
+<table>
+<thead>
+<tr class="header">
+<th align="center">Reliability</th>
+<th align="center">Cost</th>
+<th align="center">Set</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">0.72</td>
+<td align="center">45</td>
+<td align="center">(1,1,0)</td>
+</tr>
+<tr class="even">
+<td align="center">0.792</td>
+<td align="center">75</td>
+<td align="center">(2,1,0)</td>
+</tr>
+</tbody>
+</table>
+</div>
+	<p><span class="math inline">\(S_{2}^{2}\):( adding the second copy of D2)</span></p>
+
+<div class="reliability_center">
+<table>
+<thead>
+<tr class="header">
+<th align="center">Reliability</th>
+<th align="center">Cost</th>
+<th align="center">Set</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">0.864</td>
+<td align="center">60</td>
+<td align="center">(1,2,0)</td>
+</tr>
+<tr class="even">
+<td align="center">0.9504</td>
+<td align="center">90</td>
+<td align="center">(2,2,0)</td>
+</tr>
+<tr class="odd">
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">The set (2,2,0) is not feasible.</td>
+</tr>
+</tbody>
+</table>
+  
+
+</div>
+	<p>The set (2,2,0) is not feasible. Because, the cost of (2,2,0) violates the constraint <span class="math inline">\(m_{i} \ge 1\)</span>. If you take (2,2,0) we can not afford <span class="math inline">\(D_{3}\)</span>. It is violating the constraints of the system.</p>
+	<p><span class="math inline">\(S_{2}^{2}\):  (adding the second copy of D2)</span></p>
+
+    <div class="reliability_center">
+<table>
+<thead>
+<tr class="header">
+<th align="center">Reliability</th>
+<th align="center">Cost</th>
+<th align="center">Set</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">0.864</td>
+<td align="center">60</td>
+<td align="center">(1,2,0)</td>
+</tr>
+</tbody>
+</table>
+</div>
+	<p><span class="math inline">\(S_{3}^{2}\): (adding the third copy of D2)</span></p>
+
+<div class="reliability_center">
+<table>
+<thead>
+<tr class="header">
+<th align="center">Reliability</th>
+<th align="center">Cost</th>
+<th align="center">Set</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">0.8928</td>
+<td align="center">75</td>
+<td align="center">(1,3,0)</td>
+</tr>
+</tbody>
+</table>
+</div>
+	<p><span class="math inline">\(S^{2}\):(Collection of all feasible sets after adding D2 )</span></p>
+
+<div class="reliability_center">
+<table>
+<thead>
+<tr class="header">
+<th align="center">Reliability</th>
+<th align="center">Cost</th>
+<th align="center">Set</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">0.72</td>
+<td align="center">45</td>
+<td align="center">(1,1,0)</td>
+</tr>
+<tr class="even">
+<td align="center">0.792</td>
+<td align="center">75</td>
+<td align="center">(2,1,0)</td>
+</tr>
+<tr class="odd">
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">The set (2,1,0) will be eliminated.</td>
+</tr>
+<tr class="even">
+<td align="center">0.864</td>
+<td align="center">60</td>
+<td align="center">(1,2,0)</td>
+</tr>
+<tr class="odd">
+<td align="center">0.8928</td>
+<td align="center">75</td>
+<td align="center">(1,3,0)</td>
+</tr>
+</tbody>
+</table>
+  
+</div>
+	<p>The reliability of the set (2,1,0) is 0.792 with a cost of 75. But, the reliability of the (1,2,0) is 0.864 with a cost of 60. The reliability of the set (1,2,0) more than the reliability of the (2,1,0), and the cost of the set (1,2,0) is less than the cost of the (2,1,0). Therefore, (2,1,0) is not a good choice than (1,2,0). Therefore, (2,1,0) is not proceeding for the further iteration.</p>
+	<p><span class="math inline">\(S_{1}^{3}\):(adding the first copy of D3)</span></p>
+
+<div class="reliability_center">
+<table>
+<thead>
+<tr class="header">
+<th align="center">Reliability</th>
+<th align="center">Cost</th>
+<th align="center">Set</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">0.36</td>
+<td align="center">65</td>
+<td align="center">(1,1,1)</td>
+</tr>
+<tr class="even">
+<td align="center">0.432</td>
+<td align="center">80</td>
+<td align="center">(1,2,1)</td>
+</tr>
+<tr class="odd">
+<td align="center">0.4964</td>
+<td align="center">95</td>
+<td align="center">(1,3,1)</td>
+</tr>
+<tr class="even">
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">For the set (1,3,1), we can not add any more device unit.</td>
+</tr>
+</tbody>
+</table>
+</div>
+	<p><span class="math inline">\(S_{2}^{3}\):(adding the second copy of D3)</span></p>
+
+<div class="reliability_center">
+<table>
+<thead>
+<tr class="header">
+<th align="center">Reliability</th>
+<th align="center">Cost</th>
+<th align="center">Set</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">0.54</td>
+<td align="center">85</td>
+<td align="center">(1,1,2)</td>
+</tr>
+<tr class="even">
+<td align="center">0.648</td>
+<td align="center">100</td>
+<td align="center">(1,2,2)</td>
+</tr>
+<tr class="odd">
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">For the set (1,2,2), we can not add any more device unit.</td>
+</tr>
+</tbody>
+</table>
+</div>
+	<p><span class="math inline">\(S_{3}^{3}\):(adding the third copy of D3)</span></p>
+
+
+<div class="reliability_center">
+<table>
+<thead>
+<tr class="header">
+<th align="center">Reliability</th>
+<th align="center">Cost</th>
+<th align="center">Set</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">0.63</td>
+<td align="center">105</td>
+<td align="center">(1,1,3)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="reliability_center">
+<p><span class="math inline">\(S^{3}\):(Collection of all feasible sets after adding D3)</span></p>
+<table>
+<thead>
+<tr class="header">
+<th align="center">Reliability</th>
+<th align="center">Cost</th>
+<th align="center">Set</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">0.4964</td>
+<td align="center">95</td>
+<td align="center">(1,3,1)</td>
+</tr>
+<tr class="even">
+<td align="center">0.648</td>
+<td align="center">100</td>
+<td align="center">(1,2,2)</td>
+</tr>
+<tr class="odd">
+<td align="center">0.63</td>
+<td align="center">105</td>
+<td align="center">(1,1,3)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Therefore, the best design has a reliability of 0.648 and a cost of 100. The number of copies of <span class="math inline">\(m_{1}=1, m_{2}=2, m_{3}=2\)</span></p>
+    
+
+<h1 id="code">Let's get our hands dirty: Programming with Dynamic Programming</h1>
+
+<p>We will try to understand Dynamic Programming with the help of an example.</p> 
+
+<p>Governmentt of India (GoI) has a budget of Rs. <strong>420</strong> Crores. GoI has decided to distribute to this budget to various PSUs based on their demands and expected profit. GoI wants to allocate money in such that it will maximize the expected benefit. Constraint: Either the PSU demand is full filled completely or will not be considered at all.</p>
+
+<div>
+<table align="center" style="width:90%;" border="1" >
+  <tr>
+    <th style="text-align:center">PSU</th>
+    <th  style="text-align:center">Budget Required (Cost) (in Crs.)</th>
+    <th  style="text-align:center">Expected Benefit (in Crs.)</th>
+  </tr>
+  <tr>
+    <td style="text-align:center">ONGC</td>
+    <td style="text-align:center">28</td>
+    <td style="text-align:center">592</td>
+  </tr>
+  <tr>
+    <td style="text-align:center">IOCL</td>
+    <td style="text-align:center">17</td>
+    <td style="text-align:center">314</td>
+  </tr> 
+  <tr> 
+    <td style="text-align:center">NTPC</td>
+    <td style="text-align:center">10</td>
+    <td style="text-align:center">157</td>
+  </tr>
+  <tr>
+    <td style="text-align:center">PGCIL</td>
+    <td style="text-align:center">32</td>
+    <td style="text-align:center">300</td>
+  </tr>
+  <tr>
+    <td style="text-align:center">ISRO</td>
+    <td style="text-align:center">152</td>
+    <td style="text-align:center">1051</td>
+  </tr>
+  <tr>
+    <td style="text-align:center">GAIL</td>
+    <td style="text-align:center">24</td>
+    <td style="text-align:center">116</td>
+  </tr>
+  <tr>
+    <td style="text-align:center">SAIL</td>
+    <td style="text-align:center">160</td>
+    <td style="text-align:center">673</td>
+  </tr>
+  <tr>
+    <td style="text-align:center">BEL</td>
+    <td style="text-align:center">7</td>
+    <td style="text-align:center">23</td>
+  </tr>
+  <tr>
+    <td style="text-align:center">OIL</td>
+    <td style="text-align:center">94</td>
+    <td style="text-align:center">232</td>
+  </tr>
+  <tr>
+    <td style="text-align:center">BHEL</td>
+    <td style="text-align:center">101</td>
+    <td style="text-align:center">184</td>
+  </tr>
+</table>
+</div>
+
+<p>Now, this problem is an optimization problem. </p>
+
+<!-- <div class="center"> -->
+<p>
+<strong>Maximize</strong> <span class="math inline">\(\sum\limits_{i=1}^{10} b_ix_i \)</span><br>
+s.t. <span class="math inline"><br>\(\sum\limits_{i=1}^{10} c_ix_i \le B\)</span><br>
+<span class="math inline">\(x_i \in \{0,1\}\ \forall i \in \{1,2,...,10\}\)</span><br><br>
+where,<br>
+<span class="math inline">\(c_i\)</span> represents the cost required by <span class="math inline">\(i^{th}\)</span> PSU <br>
+<span class="math inline">\(b_i\)</span> represents the benefit from the <span class="math inline">\(i^{th}\)</span> PSU <br>
+<span class="math inline">\(x_i=1\)</span> represents GoI allocated budget to  <span class="math inline">\(i^{th}\)</span> PSU, otherwise not<br>
+<span class="math inline">\(B\)</span> represents the budget GoI has
+</p>
+<!-- </div> -->
+
+<p>Here, we can't directly use the simplex method for solving LPP. This problem has a particular constraint on <span class="math inline">\(x_i\)</span> which makes it Integer Programming Problem that can be easily solved using DP. This problem reduces to a standard problem in DP, which is 0/1 Knapsack Problem.</p>
+
+
+<p>Let's first define the variables.</p>
+
+<div>
+<!-- <center> -->
+<p >
+<pre class="line-numbers">
+  <code class="language-python">import numpy as np <br>
+organizations = ['ONGC', 'IOCL', 'NTPC', 'PGCIL', 'ISRO', 'GAIL', 'SAIL', 'BEL', 'OIL', 'BHEL']
+benefit = np.array([592, 314, 157, 300, 1051, 116, 673, 23, 232, 184], dtype=np.int)
+cost = np.array([28, 17, 10, 32, 152, 24, 160, 7, 94, 101], dtype=np.int)
+	
+budget = 420
+n = len(cost)</code>
+</pre>
+</p>
+<!-- </center> -->
+</div>
+
+<p>The Dynamic Programming Code:</p>
+
+<div>
+<pre class="line-numbers">
+  <code class="language-python">dp = np.zeros((n+1, budget+1), dtype=np.int)
+
+for i in range(n + 1): 
+  for b in range(budget + 1): 
+    if i == 0 or b == 0: 
+        dp[i][b] = 0
+    elif cost[i-1] <= b: 
+        dp[i][b] = max(benefit[i-1] + dp[i-1][b-cost[i-1]], dp[i-1][b]) 
+    else: 
+        dp[i][b] = dp[i-1][b] 
+
+print('Profit made by government by optimally distributing funds: Rs.', dp[n][budget], 'Crs')</code>
+</pre>
+</div>
+
+<p>
+	The Profit made by GoI is Rs. <strong>3110</strong> Crs. by optimally allocating <strong>420</strong> Crs. 
+</p>
+
+<div>
+<pre class="line-numbers">
+  <code class="language-python">profit = dp[n][budget]
+b = budget
+allocat_org = []
+for i in range(n, 0, -1): 
+    if profit <= 0: 
+        break
+    if profit == dp[i-1][b]: 
+        continue
+    else:
+        allocat_org.append(organizations[i-1])
+        profit = profit - benefit[i-1] 
+        b = b - cost[i-1] 
+
+print('Organizations which will get required funds:')
+for iter, x in enumerate(allocat_org):
+  print(x)</code>
+</pre>
+</div>
+
+
+<p>Organizations which will get the required funds are:
+	<table  style="width:70%;" cellspacing="30px" border="1" align="center">
+		<tr>
+			<th style="text-align:center">BEL</th>
+			<th style="text-align:center">SAIL</th>
+			<th style="text-align:center">ISRO</th>
+			<th style="text-align:center">PGCIL</th>
+			<th style="text-align:center">NTPC</th>
+			<th style="text-align:center">IOCL</th>
+			<th style="text-align:center">ONGC</th>
+		</tr>
+	</table>
+</p>
+
+<p>Dynamic Programming will always provide the global solution by doing minimum computations. Hence, here no matter how we solve, we will always reach the same solution.</p>
+</p>
+
+</dt-article>
+<dt-appendix>
+</dt-appendix>
+
+<script type="text/bibliography">
+  @article{sutton,
+    title={Reinforcement Learning : An Introduction},
+    author={Richard S. Sutton and Andrew G. Barto},
+    journal={},
+    year={2015},
+    url={https://web.stanford.edu/class/psych209/Readings/SuttonBartoIPRLBook2ndEd.pdf}
+  }
+  </script>
+  </body>
+  </html>
+
+
