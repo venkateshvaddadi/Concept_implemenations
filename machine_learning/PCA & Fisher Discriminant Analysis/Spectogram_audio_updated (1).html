@@ -14271,7 +14271,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -14292,7 +14292,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[51]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># It&#39;s a function for the reading the audio file.</span>
@@ -14386,7 +14386,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[52]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">cov_matrix</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
@@ -14403,7 +14403,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[53]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">avg_non_digonal_entry</span><span class="p">(</span><span class="n">cov_mat</span><span class="p">):</span>
@@ -14411,7 +14411,7 @@ a.anchor-link {
     <span class="n">diag_cov_mat</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">diag_cov_mat</span><span class="p">)</span>
     <span class="n">cov_mat_without_digonal</span><span class="o">=</span><span class="n">cov_mat</span><span class="o">-</span><span class="n">diag_cov_mat</span>
     
-    <span class="n">avg_non_digonal_entry</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">N</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cov_mat_without_digonal</span><span class="p">))</span>
+    <span class="n">avg_non_digonal_entry</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cov_mat_without_digonal</span><span class="p">))</span>
     <span class="c1">#print(np.diag(cov_mat_without_digonal).shape)</span>
     <span class="c1">#print(np.sum(cov_mat_without_digonal))</span>
     <span class="c1">#print(&#39;avg_non_digonal_entry&#39;,avg_non_digonal_entry)</span>
@@ -14426,7 +14426,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[54]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># it&#39;s a 3.125 seconds audio file.</span>
@@ -14528,7 +14528,7 @@ total time of the audio:3.125 seconds
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[55]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">window_type</span><span class="o">=</span><span class="s1">&#39;hamming&#39;</span>
@@ -14545,7 +14545,7 @@ total time of the audio:3.125 seconds
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[56]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">clean_audio_feature_vector</span><span class="o">=</span><span class="n">get_spectrogram_vector</span><span class="p">(</span><span class="n">clean_audio_file_path</span><span class="p">,</span>
@@ -14638,7 +14638,7 @@ using hamming window
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[68]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">clean_audio_Y</span><span class="p">,</span><span class="n">clean_audio_L</span><span class="p">,</span><span class="n">clean_audio_U</span><span class="o">=</span><span class="n">whitening</span><span class="p">(</span><span class="n">clean_audio_feature_vector</span><span class="p">)</span>
@@ -14664,7 +14664,7 @@ using hamming window
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>avg_non_digonal_entry of clean audio 8.720124449301144e-16
+<pre>avg_non_digonal_entry of clean audio 8.748253883008567e-16
 </pre>
 </div>
 </div>
@@ -14692,7 +14692,7 @@ using hamming window
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[69]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">))</span>
@@ -14718,7 +14718,7 @@ using hamming window
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[19]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[69]:</div>
 
 
 
@@ -14754,7 +14754,7 @@ using hamming window
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>We can see the differences between the above two co-variance matrix plottings.</p>
 <p>After whitening, the co-variance matrix of clean audio is identity matrix and all the non-digonal entries are almost zero.</p>
-<p>The average absoulte value of the non digonal entry for clean audio is: 8.8.720124449301144e-16</p>
+<p>The average absoulte value of the non digonal entry for clean audio is: 8.748253883008567e-16</p>
 
 </div>
 </div>
@@ -14765,7 +14765,7 @@ using hamming window
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[70]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># appling that transform on the noise image</span>
@@ -14804,7 +14804,7 @@ using hamming window
 <pre>
 we use the whitening tranformation of the clean audio file to whitening the noisy audio 
 
-avg_non_digonal_entry of noisy audio 0.025737912817858855
+avg_non_digonal_entry of noisy audio 0.025820938343077755
 </pre>
 </div>
 </div>
@@ -14832,7 +14832,7 @@ avg_non_digonal_entry of noisy audio 0.025737912817858855
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[71]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">))</span>
@@ -14857,7 +14857,7 @@ avg_non_digonal_entry of noisy audio 0.025737912817858855
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[21]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[71]:</div>
 
 
 
@@ -14893,7 +14893,7 @@ avg_non_digonal_entry of noisy audio 0.025737912817858855
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>The above two plots represent a noisy audio file's co-variance matrix and its whitening transformation(from clean audio whitening transformation).</p>
 <p>In the second plot, the diagonal is not visible clearly like the previous.</p>
-<p>The average absolute value of the non-digonal entry for noisy audio is 0.025737912817858855.</p>
+<p>The average absolute value of the non-digonal entry for noisy audio is 0.025820938343077755.</p>
 <p>It is relatively higher than the previous case.</p>
 <p>Since we are using the whitening-transformation of the clean audio, noise audio is not  whitened properly.</p>
 
@@ -14906,7 +14906,7 @@ avg_non_digonal_entry of noisy audio 0.025737912817858855
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[72]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">noisy_audio_Y</span><span class="p">,</span><span class="n">noisy_audio_L</span><span class="p">,</span><span class="n">noisy_audio_U</span><span class="o">=</span><span class="n">whitening</span><span class="p">(</span><span class="n">noisy_audio_feature_vector</span><span class="p">)</span>
@@ -14934,7 +14934,7 @@ avg_non_digonal_entry of noisy audio 0.025737912817858855
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>avg non digonal_entry of noisy_audio cov_matrix 9.255733703258624e-17
+<pre>avg non digonal_entry of noisy_audio cov_matrix 9.285590908753007e-17
 </pre>
 </div>
 </div>
@@ -14962,7 +14962,7 @@ avg_non_digonal_entry of noisy audio 0.025737912817858855
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[23]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[76]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">))</span>
@@ -14987,7 +14987,7 @@ avg_non_digonal_entry of noisy audio 0.025737912817858855
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[23]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[76]:</div>
 
 
 
@@ -15024,7 +15024,7 @@ avg_non_digonal_entry of noisy audio 0.025737912817858855
 <p>The above two plots represent the covariance matrices of the noisy audio and its whitening transformation.</p>
 <p>We can see the differences between the above two covariance matrix plottings.</p>
 <p>After whitening, the covariance matrix of noisy audio is the identity matrix, and all the non-diagonal entries are almost zero.</p>
-<p>The average absolute value of the non-diagonal entry for noisy audio is: 9.255733703258624e-17</p>
+<p>The average absolute value of the non-diagonal entry for noisy audio is: 9.285590908753007e-17</p>
 
 </div>
 </div>
@@ -15035,7 +15035,7 @@ avg_non_digonal_entry of noisy audio 0.025737912817858855
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[25]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[77]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># data centering on noisy data.</span>
@@ -15069,7 +15069,7 @@ avg_non_digonal_entry of noisy audio 0.025737912817858855
 <pre>
 we use the whitening tranformation of the noisy audio file to whitening clean audio 
 
-avg_non_digonal_entry of clean audio 0.020631940128433213
+avg_non_digonal_entry of clean audio 0.020698494774008806
 </pre>
 </div>
 </div>
@@ -15097,7 +15097,7 @@ avg_non_digonal_entry of clean audio 0.020631940128433213
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[27]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[80]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">))</span>
@@ -15122,7 +15122,7 @@ avg_non_digonal_entry of clean audio 0.020631940128433213
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[27]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[80]:</div>
 
 
 
@@ -15159,7 +15159,7 @@ avg_non_digonal_entry of clean audio 0.020631940128433213
 <p><font ></p>
 <p>The above two plots represent the clean audio file's covariance matrix and whitening transformation of it (from noisy audio whitening-transformation).</p>
 <p>In the second plot, the diagonal elements are not visible as in the previous plot, and non-diagonal's are also not zero (we can observe some black and white spots).</p>
-<p>The average absolute value of the non-diagonal entry for noisy audio is 0.020631940128433213.</p>
+<p>The average absolute value of the non-diagonal entry for noisy audio is 0.020698494774008806.</p>
 <p>It is relatively higher than the previous case.</p>
 <p>Since we are using the whitening-transformation of the noisy audio, clean audio is not appropriately whitened.</p>
 <p>&lt;/font&gt;</p>
